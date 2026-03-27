@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Approvals — HRMS</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="app-page">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">HR<span>MS</span></div>
+        <nav class="sidebar-nav">
+            <a href="/hr-dashboard.html" class="sidebar-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="/employees.html" class="sidebar-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Employees
+            </a>
+            <a href="/dashboard.html" class="sidebar-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Approvals
+            </a>
+            <a href="/manage-leaves.html" class="sidebar-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Leave Requests
+            </a>
+            <a href="/new-employees.html" class="sidebar-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                New Hires
+            </a>
+            <a href="/profile.html" class="sidebar-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                My Profile
+            </a>
+        </nav>
+        
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar" id="sidebarAvatar">—</div>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-name" id="sidebarUsername">Loading...</div>
+                <div class="sidebar-user-role">HR Manager</div>
+            </div>
+            <button class="sidebar-logout-btn" onclick="logout()" title="Logout">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <div class="page-header">
+            <div class="page-header-left">
+                <h1>User Approvals</h1>
+                <a href="/hr-dashboard.html" class="page-breadcrumb">← Back to Dashboard</a>
+            </div>
+            <div class="page-header-actions">
+                <button class="icon-btn" onclick="loadPendingUsers()" title="Refresh">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+            <div class="card">
+                <div class="card-title">Pending</div>
+                <div class="stat-number" id="pendingCount" style="font-size: 2rem;">—</div>
+                <div class="stat-label">Awaiting review</div>
+            </div>
+            <div class="card card-yellow">
+                <div class="card-title">Total Registered</div>
+                <div class="stat-number" id="totalCount" style="font-size: 2rem;">—</div>
+                <div class="stat-label">All users</div>
+            </div>
+            <div class="card" style="background: #E4F0E4; border-color: rgba(124,184,122,0.3);">
+                <div class="card-title">Approved Today</div>
+                <div class="stat-number" id="approvedToday" style="font-size: 2rem;">—</div>
+                <div class="stat-label">This session</div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: -0.01em;">Pending Requests</span>
+                <span id="tableCount" style="font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;"></span>
+            </div>
+
+            <div id="loading" class="empty-state">
+                <div class="empty-state-icon">⏳</div>
+                <p>Loading pending users...</p>
+            </div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">✅</div>
+                <p>No pending approvals — all clear!</p>
+            </div>
+            <div id="tableContainer" class="table-container" style="display: none; border-radius: 0; border: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Registered On</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        let currentUser = null;
+        let approvedThisSession = 0;
+
+        async function init() {
+            currentUser = await requireAuth('HR');
+            if (!currentUser) return;
+            const name = currentUser.username;
+            document.getElementById('sidebarUsername').textContent = name;
+            document.getElementById('sidebarAvatar').textContent = name.substring(0, 2).toUpperCase();
+            await loadPendingUsers();
+        }
+
+        async function loadPendingUsers() {
+            const loading = document.getElementById('loading');
+            const emptyState = document.getElementById('emptyState');
+            const tableContainer = document.getElementById('tableContainer');
+            const tbody = document.getElementById('usersTableBody');
+
+            loading.style.display = 'block';
+            emptyState.style.display = 'none';
+            tableContainer.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/hr/pending-users', { method: 'GET', credentials: 'include' });
+
+                if (response.ok) {
+                    const users = await response.json();
+                    loading.style.display = 'none';
+
+                    document.getElementById('pendingCount').textContent = users.length;
+                    document.getElementById('totalCount').textContent = users.length;
+                    document.getElementById('approvedToday').textContent = approvedThisSession;
+                    document.getElementById('tableCount').textContent = `${users.length} record${users.length !== 1 ? 's' : ''}`;
+
+                    if (users.length === 0) {
+                        emptyState.style.display = 'block';
+                    } else {
+                        tableContainer.style.display = 'block';
+                        tbody.innerHTML = users.map(user => {
+                            const initials = user.username.substring(0, 2).toUpperCase();
+                            return `
+                            <tr>
+                                <td>
+                                    <div class="emp-cell">
+                                        <div class="emp-avatar" style="background: linear-gradient(135deg, #7ABCB8, #7CB87A);">${initials}</div>
+                                        <div>
+                                            <div class="emp-name">${user.username}</div>
+                                            <div class="emp-email">ID: ${user.userId}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-${user.role.toLowerCase()}">${user.role}</span></td>
+                                <td><span class="badge badge-${user.status.toLowerCase()}">${user.status}</span></td>
+                                <td>${user.createdAt}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn-sm btn-success" onclick="approveUser(${user.userId})">Approve</button>
+                                        <button class="btn-sm btn-danger" onclick="rejectUser(${user.userId})">Reject</button>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        }).join('');
+                    }
+                } else if (response.status === 401) {
+                    showAlert('Session expired. Please login again.', 'error');
+                    setTimeout(() => logout(), 2000);
+                } else if (response.status === 403) {
+                    showAlert('Access denied: HR role required', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('An error occurred while loading users', 'error');
+                loading.style.display = 'none';
+            }
+        }
+
+        async function approveUser(userId) {
+            if (!confirm('Approve this user?')) return;
+            try {
+                const response = await fetch(`/api/hr/users/${userId}/approve`, { method: 'PUT', credentials: 'include' });
+                if (response.ok) {
+                    approvedThisSession++;
+                    showAlert('User approved successfully!', 'success');
+                    await loadPendingUsers();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.message || 'Failed to approve user', 'error');
+                }
+            } catch (error) { showAlert('An error occurred', 'error'); }
+        }
+
+        async function rejectUser(userId) {
+            if (!confirm('Reject this user?')) return;
+            try {
+                const response = await fetch(`/api/hr/users/${userId}/reject`, { method: 'PUT', credentials: 'include' });
+                if (response.ok) {
+                    showAlert('User rejected.', 'success');
+                    await loadPendingUsers();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.message || 'Failed to reject user', 'error');
+                }
+            } catch (error) { showAlert('An error occurred', 'error'); }
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — HRMS</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-wrapper">
+        <div class="auth-brand">
+            <div class="auth-brand-logo">HR<span>MS</span></div>
+        </div>
+
+        <div class="auth-card">
+            <h1>Welcome back</h1>
+            <p>Sign in to your HRMS account to continue.</p>
+
+            <div id="alertContainer"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required minlength="3" placeholder="Enter your username">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.75rem;">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6" placeholder="Enter your password">
+                </div>
+
+                <button type="submit" id="loginBtn" style="width: 100%;">
+                    <span id="loginText">Sign In</span>
+                    <span id="loginSpinner" class="spinner" style="display:none;"></span>
+                </button>
+            </form>
+
+            <p class="text-center mt-1" style="font-size: 0.85rem; margin-bottom: 0;">
+                Don't have an account? <a href="/signup.html" class="link">Register here</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        requireGuest();
+
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn  = document.getElementById('loginBtn');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.disabled = true;
+            document.getElementById('loginText').textContent = 'Signing in...';
+            document.getElementById('loginSpinner').style.display = 'inline-block';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    redirectToDashboard(user.role);
+                } else {
+                    const error = await response.json();
+                    showAlert(error.message || 'Login failed', 'error');
+                    loginBtn.disabled = false;
+                    document.getElementById('loginText').textContent = 'Sign In';
+                    document.getElementById('loginSpinner').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('An error occurred. Please try again.', 'error');
+                loginBtn.disabled = false;
+                document.getElementById('loginText').textContent = 'Sign In';
+                document.getElementById('loginSpinner').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
