@@ -28,7 +28,7 @@ public class UserService {
     @Autowired
     private ActivityLogService activityLogService;
 
-    // ================= REGISTER (from signup form) =================
+    // from signup form
     @Transactional
     public Users registerUser(RegisterRequest request) {
 
@@ -81,7 +81,7 @@ public class UserService {
         return savedUser;
     }
 
-    // ================= LOGIN =================
+    //  LOGIN 
     public Users authenticateUser(String username, String password) {
 
         Users user = userRepository.findByUsername(username)
@@ -96,13 +96,13 @@ public class UserService {
         return user;
     }
 
-    // ================= GET USER =================
+    //  GET USER 
     public Users getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    // ================= APPROVE / REJECT =================
+    //  APPROVE / REJECT USER
     @Transactional
     public Users updateUserStatus(Long userId, UserStatus status) {
 

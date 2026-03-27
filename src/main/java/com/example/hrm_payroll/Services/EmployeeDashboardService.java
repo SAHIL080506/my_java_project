@@ -26,9 +26,7 @@ public class EmployeeDashboardService {
     @Autowired private EmployeeTaskRepository employeeTaskRepository;
     @Autowired private TaskService taskService;
 
-    /**
-     * Build full dashboard data for a logged-in employee
-     */
+    //Build full dashboard data for a logged-in employee
     public EmployeeDashboardResponse getDashboardForEmployee(Long empId) {
         Employee employee = employeeRepository.findById(empId)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + empId));

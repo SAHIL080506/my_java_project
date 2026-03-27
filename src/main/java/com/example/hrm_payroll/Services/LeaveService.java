@@ -23,9 +23,7 @@ public class LeaveService {
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private ActivityLogService activityLogService;
 
-    /**
-     * Employee applies for leave.
-     */
+    //Employee applies for leave
     @Transactional
     public LeaveRequestDTO applyLeave(Long empId, String leaveTypeStr,
                                       LocalDate startDate, LocalDate endDate, String reason) {
@@ -65,25 +63,19 @@ public class LeaveService {
         return LeaveRequestDTO.fromEntity(saved);
     }
 
-    /**
-     * Get all leave requests for an employee.
-     */
+    //Get all leave requests for an employee.
     public List<LeaveRequestDTO> getLeavesByEmployee(Long empId) {
         return leaveRequestRepository.findByEmployeeId(empId)
                 .stream().map(LeaveRequestDTO::fromEntity).collect(Collectors.toList());
     }
 
-    /**
-     * HR: Get all leave requests.
-     */
+    //HR: Get all leave requests.
     public List<LeaveRequestDTO> getAllLeaves() {
         return leaveRequestRepository.findAllOrderByAppliedDateDesc()
                 .stream().map(LeaveRequestDTO::fromEntity).collect(Collectors.toList());
     }
 
-    /**
-     * HR: Approve a leave request.
-     */
+    //HR: Approve a leave request.
     @Transactional
     public LeaveRequestDTO approveLeave(Long leaveId) {
         LeaveRequest lr = leaveRequestRepository.findById(leaveId)
@@ -103,9 +95,7 @@ public class LeaveService {
         return LeaveRequestDTO.fromEntity(saved);
     }
 
-    /**
-     * HR: Reject a leave request.
-     */
+    //HR: Reject a leave request.
     @Transactional
     public LeaveRequestDTO rejectLeave(Long leaveId) {
         LeaveRequest lr = leaveRequestRepository.findById(leaveId)
@@ -125,9 +115,7 @@ public class LeaveService {
         return LeaveRequestDTO.fromEntity(saved);
     }
 
-    /**
-     * Count pending leave requests (for HR dashboard).
-     */
+    //Count pending leave requests (for HR dashboard).
     public long countPendingLeaves() {
         return leaveRequestRepository.countByStatus(LeaveStatus.PENDING);
     }

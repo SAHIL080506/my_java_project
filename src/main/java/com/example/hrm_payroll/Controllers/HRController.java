@@ -32,7 +32,7 @@ public class HRController {
     @Autowired
     private EmployeeService employeeService;
 
-    // ==================== DASHBOARD ====================
+    //  DASHBOARD 
 
     /**
      * GET /api/hr/dashboard/stats
@@ -44,7 +44,7 @@ public class HRController {
         return ResponseEntity.ok(stats);
     }
 
-    // ==================== EMPLOYEES ====================
+    //  EMPLOYEES 
 
     /**
      * GET /api/hr/employees
@@ -89,7 +89,7 @@ public class HRController {
         return ResponseEntity.ok(employeeService.getAllDesignations());
     }
 
-    // ==================== USER APPROVALS ====================
+    //  USER APPROVALS 
 
     @GetMapping("/pending-users")
     public ResponseEntity<List<UserResponse>> getPendingUsers() {

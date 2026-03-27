@@ -121,9 +121,7 @@ public class PayrollService {
         return PayrollResponse.fromEntity(savedPayroll);
     }
 
-    /**
-     * Check if payroll exists for current employee and month
-     */
+    //Check if payroll exists for current employee and month
     public boolean payrollExists(Long empId, String salaryMonth) {
         Employee employee = employeeRepository.findById(empId)
             .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
@@ -131,9 +129,7 @@ public class PayrollService {
         return payrollRepository.findByEmployeeAndSalaryMonth(employee, salaryMonth).isPresent();
     }
 
-    /**
-     * Generate PDF payslip for specific employee and month
-     */
+    //Generate PDF payslip for specific employee and month
     public byte[] generatePayslipPDF(Long empId, String salaryMonth) {
 
         Employee employee = employeeRepository.findById(empId)
@@ -234,9 +230,7 @@ public class PayrollService {
         }
     }
 
-    /**
-     * Create table cell with formatting
-     */
+    //Create table cell with formatting
     private com.itextpdf.layout.element.Cell createCell(String content, boolean isBold) {
         com.itextpdf.layout.element.Cell cell = new com.itextpdf.layout.element.Cell()
             .add(new Paragraph(content));
@@ -248,16 +242,12 @@ public class PayrollService {
         return cell;
     }
 
-    /**
-     * Format amount for display
-     */
+    //Format amount for display
     private String formatAmount(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.HALF_UP).toString();
     }
 
-    /**
-     * Format month from YYYY-MM to readable format
-     */
+    //Format month from YYYY-MM to readable format
     private String formatMonthForDisplay(String salaryMonth) {
         try {
             YearMonth ym = YearMonth.parse(salaryMonth, DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -267,9 +257,7 @@ public class PayrollService {
         }
     }
 
-    /**
-     * Validate salary month format
-     */
+    //Validate salary month format
     private void validateSalaryMonth(String salaryMonth) {
         if (salaryMonth == null || salaryMonth.trim().isEmpty()) {
             throw new IllegalArgumentException("Salary month is required");
@@ -282,9 +270,7 @@ public class PayrollService {
         }
     }
 
-    /**
-     * Validate amounts
-     */
+    //Validate amounts
     private void validateAmounts(GeneratePayrollRequest request) {
         if (request.getBasicSalary() == null || request.getBasicSalary().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Basic salary must be greater than zero");

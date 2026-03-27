@@ -107,9 +107,7 @@ public class EmployeeService {
         return days;
     }
 
-    /**
-     * Returns ONLY employees with user.status = ACTIVE
-     */
+    //Returns ONLY employees with user.status = ACTIVE
     public List<EmployeeResponse> searchEmployees(String name, String department, String designation) {
         List<Employee> employees = employeeRepository.searchActiveEmployees(name, department, designation, UserStatus.ACTIVE);
         YearMonth currentMonth = YearMonth.now();

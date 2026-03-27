@@ -20,7 +20,7 @@ public class EmployeeDashboardResponse {
     private long completedTasks;
     private long pendingTasks;
     private long completedBonusTasks;
-    private BigDecimal bonusAmount; // ₹500 per completed bonus task (configurable)
+    private BigDecimal bonusAmount; // ₹500 per completed bonus task 
 
     // Tasks list
     private List<EmployeeTaskResponse> tasks;

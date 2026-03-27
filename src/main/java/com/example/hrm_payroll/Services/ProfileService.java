@@ -38,9 +38,7 @@ public class ProfileService {
             .orElseThrow(() -> new RuntimeException("Employee profile not found"));
     }
 
-    /**
-     * Returns a minimal profile map for HR users who have no Employee record.
-     */
+    //Returns a minimal profile map for HR users who have no Employee record.
     public Map<String, Object> getHRProfileByUserId(Long userId) {
         Users user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));

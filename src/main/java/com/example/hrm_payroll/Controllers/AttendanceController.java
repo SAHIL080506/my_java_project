@@ -28,7 +28,7 @@ public class AttendanceController {
     @Autowired private UserRepository userRepository;
     @Autowired private EmployeeRepository employeeRepository;
 
-    // ── Helpers ───────────────────────────────────────────────────────────
+    // ── Helpers 
 
     /** Resolve the logged-in employee from session. Returns null if not found or not an EMPLOYEE. */
     private Employee resolveEmployee(HttpSession session) {
@@ -39,9 +39,9 @@ public class AttendanceController {
         return employeeRepository.findByUser(user).orElse(null);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+    
     // POST /api/attendance/check-in
-    // ═══════════════════════════════════════════════════════════════════════
+    
 
     /**
      * Employee checks in for today.
@@ -74,10 +74,9 @@ public class AttendanceController {
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+     
     // POST /api/attendance/check-out
-    // ═══════════════════════════════════════════════════════════════════════
-
+    
     /**
      * Employee checks out for today.
      * Only allowed if check_in_time exists for today.
@@ -109,10 +108,9 @@ public class AttendanceController {
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+    
     // GET /api/attendance/status/{empId}
-    // ═══════════════════════════════════════════════════════════════════════
-
+    
     /**
      * Get today's attendance status for a specific employee by empId.
      * Returns: { state: "NOT_CHECKED_IN" | "CHECKED_IN" | "CHECKED_OUT", checkInTime, checkOutTime }
@@ -130,10 +128,9 @@ public class AttendanceController {
         return ResponseEntity.ok(detail);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+    
     // GET /api/attendance/today-status  (employee's own status)
-    // ═══════════════════════════════════════════════════════════════════════
-
+    
     /**
      * Employee: get their own today's attendance state.
      * Returns: { state, empId, date, checkInTime?, checkOutTime? }
@@ -158,9 +155,8 @@ public class AttendanceController {
         return ResponseEntity.ok(detail);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+    
     // GET /api/attendance/today-all
-    // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * HR only: map of empId → display status for all employees today.
@@ -176,10 +172,9 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.getTodayStatusForAll());
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
+    
     // GET /api/attendance/today-stats
-    // ═══════════════════════════════════════════════════════════════════════
-
+    
     /**
      * HR only: active/inactive counts for today's dashboard.
      */

@@ -21,11 +21,8 @@ public class AttendanceService {
     @Autowired private AttendanceRepository attendanceRepository;
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private ActivityLogService activityLogService;
-
-    // ═══════════════════════════════════════════════════════════════════════
-    // CHECK-IN LOGIC
-    // ═══════════════════════════════════════════════════════════════════════
-
+    
+    // CHECK-IN LOGIC 
     /**
      * Employee checks in for today.
      *
@@ -152,30 +149,25 @@ public class AttendanceService {
         return attendanceRepository.countActiveToday(LocalDate.now());
     }
 
-    /**
-     * HR Dashboard: INACTIVE count = total - active
-     */
+    
+      //HR Dashboard: INACTIVE count = total - active
+     
     public long countInactiveToday(long totalEmployees) {
         return totalEmployees - countActiveToday();
     }
 
-    /**
-     * Legacy: count PRESENT (now means ACTIVE) for backward compat with EmployeeService
-     */
+    //Legacy: count PRESENT (now means ACTIVE) for backward compat with EmployeeService
     public long countPresentToday() {
         return countActiveToday();
     }
 
-    /**
-     * Legacy: count absent for backward compat
-     */
+    // Legacy: count absent for backward compat
     public long countAbsentToday(long totalEmployees) {
         return countInactiveToday(totalEmployees);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
     // HR EMPLOYEE LIST — bulk status map
-    // ═══════════════════════════════════════════════════════════════════════
+
 
     /**
      * HR Employee List: map of empId → display status string.

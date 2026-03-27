@@ -37,11 +37,10 @@ public class TaskService {
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private ActivityLogService activityLogService;
 
-    // ===================== ONBOARDING TASK CRUD =====================
+    //  ONBOARDING TASK CRUD 
 
-    /**
-     * HR creates a new onboarding task template
-     */
+    // HR creates a new onboarding task template
+     
     @Transactional
     public OnboardingTaskResponse createTask(String title, String description, boolean isBonus) {
         if (title == null || title.trim().isEmpty()) {
@@ -56,9 +55,7 @@ public class TaskService {
         return OnboardingTaskResponse.fromEntity(saved);
     }
 
-    /**
-     * Get all task templates (for HR dropdown when assigning)
-     */
+    //Get all task templates (for HR dropdown when assigning)
     public List<OnboardingTaskResponse> getAllTaskTemplates() {
         return onboardingTaskRepository.findAll()
                 .stream()
@@ -98,10 +95,10 @@ public class TaskService {
         return EmployeeTaskResponse.fromEntity(saved);
     }
 
-    /**
-     * HR reassigns (resets) an already-assigned task back to PENDING.
-     * Clears proof file path and status.
-     */
+ 
+      //HR reassigns (resets) an already-assigned task back to PENDING.
+      //Clears proof file path and status.
+     
     @Transactional
     public EmployeeTaskResponse reassignTask(Long empId, Long taskId) {
         Employee employee = employeeRepository.findById(empId)
@@ -132,10 +129,10 @@ public class TaskService {
 
     
 
-    /**
-     * Employee marks a task complete and uploads proof file.
-     * File is mandatory.
-     */
+    
+    //  Employee marks a task complete and uploads proof file.
+      //File is mandatory.
+     
     @Transactional
     public EmployeeTaskResponse completeTask(Long employeeTaskId, MultipartFile proofFile) throws IOException {
 
@@ -184,10 +181,7 @@ public class TaskService {
         return EmployeeTaskResponse.fromEntity(saved);
     }
 
-
-    /**
-     * HR marks a task as COMPLETED without requiring proof file.
-     */
+    //HR marks a task as COMPLETED without requiring proof file.
     @Transactional
     public EmployeeTaskResponse markTaskDoneByHR(Long assignmentId) {
         EmployeeTask et = employeeTaskRepository.findById(assignmentId)
@@ -203,11 +197,9 @@ public class TaskService {
         return EmployeeTaskResponse.fromEntity(saved);
     }
 
-        // ===================== QUERIES =====================
+        //  QUERIES 
 
-    /**
-     * Get all tasks assigned to an employee
-     */
+    //Get all tasks assigned to an employee
     public List<EmployeeTaskResponse> getTasksForEmployee(Long empId) {
         return employeeTaskRepository.findByEmpId(empId)
                 .stream()
@@ -215,16 +207,12 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Count completed bonus tasks for an employee — for dashboard bonus display
-     */
+    //Count completed bonus tasks for an employee — for dashboard bonus display
     public long countCompletedBonusTasks(Long empId) {
         return employeeTaskRepository.countCompletedBonusTasksByEmpId(empId);
     }
 
-    /**
-     * Calculate total bonus amount earned by an employee
-     */
+    //Calculate total bonus amount earned by an employee
     public BigDecimal calculateBonusAmount(Long empId) {
         long bonusTaskCount = countCompletedBonusTasks(empId);
         return ActivityLogService.BONUS_PER_TASK.multiply(BigDecimal.valueOf(bonusTaskCount));
